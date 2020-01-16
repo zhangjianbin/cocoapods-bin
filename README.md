@@ -1,10 +1,10 @@
-# cocoapods-bin
+# cocoapods-miBin
 
 组件二进制化插件。
 
 [基于 CocoaPods 的组件二进制化实践](https://triplecc.github.io/2019/01/21/%E5%9F%BA%E4%BA%8ECocoaPods%E7%9A%84%E7%BB%84%E4%BB%B6%E4%BA%8C%E8%BF%9B%E5%88%B6%E5%8C%96%E5%AE%9E%E8%B7%B5/)
 
-[Demo 工程](https://github.com/for-example-test/cocoapods-bin-example)
+[Demo 工程](https://github.com/for-example-test/cocoapods-miBin-example)
 
 ## 概要
 
@@ -24,9 +24,9 @@
 
 ## 准备工作
 
-安装 `cocoapods-bin`：
+安装 `cocoapods-miBin`：
 
-    $ gem install cocoapods-bin
+    $ gem install cocoapods-miBin
 
 初始化插件：
 
@@ -93,7 +93,7 @@ pod bin repo push YOUR_OPTIONS
 
 ### 基本信息
 
-`cocoapods-bin` 命令行信息可以输入以下命令查看: 
+`cocoapods-miBin` 命令行信息可以输入以下命令查看: 
 
 ```shell
 ➜  ~ pod bin --help
@@ -139,11 +139,11 @@ Options:
 
 ### 二进制 podspec
 
- `cocoapods-bin` 针对一个组件，同时使用了两种 podspec，分别为源码 podspec 和二进制 podspec，这种方式在没有工具支撑的情况下，势必会增加开发者维护组件的工作量。做为开发者来说，我是不希望同时维护两套 podspec 的。为了解决这个问题， 插件提供了自动生成二进制 podspec 功能，开发者依旧只需要关心源码 podspec 即可。
+ `cocoapods-miBin` 针对一个组件，同时使用了两种 podspec，分别为源码 podspec 和二进制 podspec，这种方式在没有工具支撑的情况下，势必会增加开发者维护组件的工作量。做为开发者来说，我是不希望同时维护两套 podspec 的。为了解决这个问题， 插件提供了自动生成二进制 podspec 功能，开发者依旧只需要关心源码 podspec 即可。
 
 一般来说，在接入插件前，组件源码 podspec 是已经存在的，所以我们只需要向二进制私有源推送组件的二进制 podspec 即可。如果有条件的话，二进制和源码  podspec 的发布可以走 GitLab CI ，这也是我推荐的做法。
 
-下面介绍下和二进制 podspec 相关的 `cocoapods-bin` 命令。
+下面介绍下和二进制 podspec 相关的 `cocoapods-miBin` 命令。
 
 #### pod bin spec create
 
@@ -396,15 +396,15 @@ Options:
 
 ### Podfile DSL
 
-首先，开发者需要在 Podfile 中需要使用 `plugin 'cocoapods-bin'` 语句引入插件 :
+首先，开发者需要在 Podfile 中需要使用 `plugin 'cocoapods-miBin'` 语句引入插件 :
 
 ```ruby
-plugin 'cocoapods-bin'
+plugin 'cocoapods-miBin'
 ```
 
 顺带可以删除 Podfile 中的 source ，因为插件内部会自动帮你添加两个私有源。
 
-`cocoapods-bin `插件提供二进制相关的配置语句有 `use_binaries!`、`use_binaries_with_spec_selector!` 以及 `set_use_source_pods`，下面会分别介绍。
+`cocoapods-miBin `插件提供二进制相关的配置语句有 `use_binaries!`、`use_binaries_with_spec_selector!` 以及 `set_use_source_pods`，下面会分别介绍。
 
 #### use_binaries!
 
