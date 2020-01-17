@@ -70,7 +70,8 @@ module Pod
             current_repo &&= current_repo.url || current_repo.name
             previous_spec_repo = sandbox.manifest.spec_repo(spec.name)
             has_changed_repo = !previous_spec_repo.nil? && current_repo && (current_repo != previous_spec_repo)
-            title = "Installing #{spec.name} #{spec.version}"
+            title = "Installing #{spec.name} #{spec.version}".dup
+            #puts title.frozen?
             if has_changed_version && has_changed_repo
               title << " (was #{previous_version} and source changed to `#{current_repo}` from `#{previous_spec_repo}`)"
               end

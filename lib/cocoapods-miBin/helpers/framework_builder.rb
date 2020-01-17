@@ -154,7 +154,7 @@ module CBin
       end
 
       def compile
-        defines = "GCC_PREPROCESSOR_DEFINITIONS='$(inherited)'"
+        defines = "GCC_PREPROCESSOR_DEFINITIONS='$(inherited)'".dup
         defines << ' ' << @spec.consumer(@platform).compiler_flags.join(' ')
 
         options = ios_build_options
@@ -174,8 +174,7 @@ module CBin
       def xcodebuild(defines = '', args = '', build_dir = 'build')
         command = "xcodebuild #{defines} #{args} CONFIGURATION_BUILD_DIR=#{build_dir} clean build -configuration Release -target #{target_name} -project ./Pods.xcodeproj 2>&1"
         output = `#{command}`.lines.to_a
-
-        if $CHILD_STATUS.exitstatus != 0
+        if $?.exitstatus != 0
           raise <<~EOF
             Build command failed: #{command}
             Output:

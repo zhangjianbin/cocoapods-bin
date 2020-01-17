@@ -6,11 +6,11 @@ require 'cocoapods-miBin/gem_version.rb'
 Gem::Specification.new do |spec|
   spec.name          = 'cocoapods-miBin'
   spec.version       = CBin::VERSION
-  spec.authors       = ['tripleCC']
-  spec.email         = ['triplec.linux@gmail.com']
+  spec.authors       = ['zhangyanbin']
+  spec.email         = ['zhangyanbin@xiaomi.com']
   spec.description   = %q{cocoapods-miBin is a plugin which helps develpers switching pods between source code and binary.}
   spec.summary       = %q{cocoapods-miBin is a plugin which helps develpers switching pods between source code and binary.}
-  spec.homepage      = 'https://github.com/tripleCC/cocoapods-miBin'
+  spec.homepage      = 'https://github.com/zhangjianbin/cocoapods-bin.git'
   spec.license       = 'MIT'
 
   spec.files         = `git ls-files`.split($/)
