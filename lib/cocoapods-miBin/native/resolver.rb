@@ -50,6 +50,7 @@ module Pod
         else
           specifications = find_cached_set(dependency)
                            .all_specifications(options.warn_for_multiple_pod_sources)
+                               .select { |s| requirement.satisfied_by? s.version }
         end
 
         specifications

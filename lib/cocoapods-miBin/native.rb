@@ -12,6 +12,7 @@ if Pod.match_version?('~> 1.4')
   require 'cocoapods-miBin/native/pod_source_installer'
   require 'cocoapods-miBin/native/linter'
   require 'cocoapods-miBin/native/resolver'
+  require 'cocoapods-miBin/native/pod_target'
   require 'cocoapods-miBin/native/source'
   require 'cocoapods-miBin/native/validator'
   require 'cocoapods-miBin/native/acknowledgements'
