@@ -22,18 +22,28 @@ module CBin
           defines = compile
 
           build_sim_libraries(defines)
-          output = framework.versions_path + Pathname.new(@spec.name)
-          build_static_library_for_ios(output)
-
-          copy_headers
-          copy_license
-          copy_resources
-
-          cp_to_source_dir
+          #output = framework.versions_path + Pathname.new(@spec.name)
+          #build_static_library_for_ios(output)
+          #
+          #copy_headers
+          #copy_license
+          #copy_resources
+          package_framework
+          #cp_to_source_dir
         end
       end
 
       private
+
+      def package_framework
+        sim_path = Pathname.new("#{@source_dir}/bin-archive/#{@spec.name}/build-simulator/#{@spec.name}.framework/#{@spec.name}")
+        arm_path = Pathname.new("#{@source_dir}/bin-archive/#{@spec.name}/build/#{@spec.name}.framework/#{@spec.name}")
+        arm_framework_path = Pathname.new("#{@source_dir}/bin-archive/#{@spec.name}/build/#{@spec.name}.framework")
+        #puts sim_path
+        #puts arm_path
+        `cp -fa #{arm_framework_path} #{@source_dir}`
+        `lipo -create #{arm_path} #{sim_path} -output #{@source_dir}/#{@spec.name}.framework/#{@spec.name}`
+      end
 
       def cp_to_source_dir
         target_dir = "#{@source_dir}/#{@spec.name}.framework"
