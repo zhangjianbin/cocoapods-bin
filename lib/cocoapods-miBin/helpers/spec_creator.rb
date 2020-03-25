@@ -70,8 +70,10 @@ module CBin
           extnames += code_spec_consumer.resources.map { |r| File.basename(r) }
         end
         if extnames.any?
-          @spec.resources = framework_contents('Resources').flat_map { |r| extnames.map { |e| "#{r}/#{e}" } }
+          #@spec.resources = framework_contents('Resources').flat_map { |r| extnames.map { |e| "#{r}/#{e}" } }
+          @spec.resources = framework_resources.flat_map { |r| extnames.map { |e| "#{r}/#{e}" } }
         end
+
 
         # Source Location
         @spec.source = binary_source
@@ -127,6 +129,9 @@ module CBin
 
       def framework_contents(name)
         ["#{code_spec.root.name}.framework", "#{code_spec.root.name}.framework/Versions/A"].map { |path| "#{path}/#{name}" }
+      end
+      def framework_resources()
+        ["#{code_spec.root.name}.framework", "#{code_spec.root.name}.framework/Versions/A"].map { |path| "#{path}" }
       end
     end
   end

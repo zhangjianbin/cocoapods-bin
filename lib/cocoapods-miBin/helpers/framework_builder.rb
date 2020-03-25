@@ -158,7 +158,12 @@ module CBin
       def ios_architectures
         archs = %w[x86_64 arm64 armv7 armv7s i386]
         @vendored_libraries.each do |library|
-          archs = `lipo -info #{library}`.split & archs
+          if File.extname(Pathname.new(library)) == ".framework"
+            file_base = File.basename(library,".framework")
+            archs = `lipo -info #{library}/#{file_base}`.split & archs
+          elsif
+            archs = `lipo -info #{library}`.split & archs
+          end
         end
         archs
       end
