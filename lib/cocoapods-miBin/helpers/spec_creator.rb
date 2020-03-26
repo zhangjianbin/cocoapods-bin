@@ -59,10 +59,22 @@ module CBin
         @spec = code_spec.dup
         # vendored_frameworks | resources | source | source_files | public_header_files
         # license | resource_bundles | vendored_libraries
+        #
+        #vi = @spec.vendored_libraries
+        file_accessor = Pod::Sandbox::FileAccessor.new(Pathname.new('.').expand_path, code_spec_consumer)
+        vendored_static_libraries = file_accessor.vendored_static_libraries
+        vendored_static_frameworks = file_accessor.vendored_static_frameworks
+        #puts Pathname.new('.').expand_path
+        #puts code_spec_consumer
+        #puts vi
 
         # Project Linkin
-        @spec.vendored_frameworks = "#{code_spec.root.name}.framework"
-
+        base_framework = ["#{spec.name}_binary/#{code_spec.root.name}.framework"]
+        vendored_static_frameworks.each do |framework|
+          #puts framework.class
+          base_framework.append("#{spec.name}_binary/"+File.basename(framework))
+        end
+        @spec.vendored_frameworks = base_framework
         # Resources
         extnames = []
         extnames << '*.bundle' if code_spec_consumer.resource_bundles.any?
@@ -74,6 +86,14 @@ module CBin
           @spec.resources = framework_resources.flat_map { |r| extnames.map { |e| "#{r}/#{e}" } }
         end
 
+        base_libs = []
+        vendored_static_libraries.each do |lib|
+          #puts framework.class
+          base_libs.append("#{spec.name}_binary/"+File.basename(lib))
+        end
+        if base_libs.count > 0
+          @spec.vendored_libraries = base_libs
+        end
 
         # Source Location
         @spec.source = binary_source
@@ -96,11 +116,12 @@ module CBin
         # 这里统一只对命名后缀 .a 文件做处理
         # spec_hash.delete('vendored_libraries')
         # libraries 只能假设为动态库不做处理了，如果有例外，需要开发者自行处理
-        vendored_libraries = spec_hash.delete('vendored_libraries')
-        vendored_libraries = Array(vendored_libraries).reject { |l| l.end_with?('.a') }
-        if vendored_libraries.any?
-          spec_hash['vendored_libraries'] = vendored_libraries
-        end
+
+        #vendored_libraries = spec_hash.delete('vendored_libraries')
+        #vendored_libraries = Array(vendored_libraries).reject { |l| l.end_with?('.a') }
+        #if vendored_libraries.any?
+        #  spec_hash['vendored_libraries'] = vendored_libraries
+        #end
 
         # Filter platforms
         platforms = spec_hash['platforms']
@@ -131,7 +152,7 @@ module CBin
         ["#{code_spec.root.name}.framework", "#{code_spec.root.name}.framework/Versions/A"].map { |path| "#{path}/#{name}" }
       end
       def framework_resources()
-        ["#{code_spec.root.name}.framework", "#{code_spec.root.name}.framework/Versions/A"].map { |path| "#{path}" }
+        ["#{spec.name}_binary/#{code_spec.root.name}.framework", "#{spec.name}_binary/#{code_spec.root.name}.framework/Versions/A"].map { |path| "#{path}" }
       end
     end
   end

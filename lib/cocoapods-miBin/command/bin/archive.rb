@@ -72,14 +72,14 @@ module Pod
         end
 
         def zip_static_framework
-          output_name = "#{framework_name}.zip"
-          unless File.exist?(framework_name)
-            raise Informative, "没有需要压缩的 framework 文件：#{framework_name}"
+          output_name = "#{binary_name}.zip"
+          unless File.exist?(binary_name)
+            raise Informative, "没有需要压缩的 framework 文件：#{binary_name}"
           end
 
-          UI.puts "Compressing #{framework_name} into #{output_name}"
+          UI.puts "Compressing #{binary_name} into #{output_name}"
 
-          `zip --symlinks -r #{output_name} #{framework_name}`
+          `zip --symlinks -r #{output_name} #{binary_name}`
         end
 
         def build_static_framework
@@ -95,7 +95,7 @@ module Pod
           UI.puts 'Cleaning workspace'
 
           FileUtils.rm_rf(gen_name)
-          FileUtils.rm_rf(framework_name) if @zip
+          FileUtils.rm_rf(binary_name) if @zip
         end
 
         def gen_name
@@ -104,6 +104,10 @@ module Pod
 
         def framework_name
           "#{@spec.name}.framework"
+        end
+
+        def binary_name
+          "#{@spec.name}_binary"
         end
 
         def workspace_directory

@@ -36,13 +36,21 @@ module CBin
       private
 
       def package_framework
+        `mkdir -p #{@source_dir}/#{@spec.name}_binary`
+        @vendored_libraries.each do |libs|
+          #puts libs
+          #puts libs.class
+          lib_base_name = File.basename(libs)
+          `cp -fa #{libs} #{@source_dir}/#{@spec.name}_binary/#{lib_base_name}`
+        end
         sim_path = Pathname.new("#{@source_dir}/bin-archive/#{@spec.name}/build-simulator/#{@spec.name}.framework/#{@spec.name}")
         arm_path = Pathname.new("#{@source_dir}/bin-archive/#{@spec.name}/build/#{@spec.name}.framework/#{@spec.name}")
         arm_framework_path = Pathname.new("#{@source_dir}/bin-archive/#{@spec.name}/build/#{@spec.name}.framework")
         #puts sim_path
         #puts arm_path
-        `cp -fa #{arm_framework_path} #{@source_dir}`
-        `lipo -create #{arm_path} #{sim_path} -output #{@source_dir}/#{@spec.name}.framework/#{@spec.name}`
+        `cp -fa #{arm_framework_path} #{@source_dir}/#{@spec.name}_binary`
+        `lipo -create #{arm_path} #{sim_path} -output #{@source_dir}/#{@spec.name}_binary/#{@spec.name}.framework/#{@spec.name}`
+
       end
 
       def cp_to_source_dir
